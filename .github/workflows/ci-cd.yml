@@ -1,0 +1,23 @@
+name: Grocery CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: docker build -t grocery-app .
+
+      - name: Test Docker Image
+        run: docker run -d -p 8080:80 --name grocery-container grocery-app
+
+      - name: Check Application
+        run: curl http://localhost:8080
